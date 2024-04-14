@@ -25,7 +25,14 @@ class ps_edition_basic_uninstaller extends Module
 	public function install()
 	{
 		//TODO: Adding validation for checking if ps_edition_basic is installed
-		
+		$psModule = Module::getInstanceByName('ps_edition_basic');
+		if($psModule){
+			if($psModule->isInstalled()){
+				$this->_errors[] = $this->trans('Cannot apply fix because the ps_edition_basic module is installed!', [], 'Modules.ps_edition_basic_uninstaller.Admin');
+				return false;
+			}
+		}
+
 		//Remove parent from dashboard
 		$tab = new \Tab(\Tab::getIdFromClassName('AdminDashboard'));
 		$tab->id_parent = 0;
@@ -35,11 +42,8 @@ class ps_edition_basic_uninstaller extends Module
 		//Set admin dashboard as default for employee
 		\Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . "employee SET default_tab = '$tab->id';");
 		
-		return parent::install();
-	}
-	
-	public function uninstall()
-	{
-		return parent::uninstall();
+		$this->_confirmations[] = $this->trans('The fix was successfully applied now you can remove this one-time module from your prestashop!', [], 'Modules.ps_edition_basic_uninstaller.Admin');
+		
+		return true;
 	}
 }
