@@ -12,8 +12,8 @@ class ps_edition_basic_uninstaller extends Module
 		$this->tab = "administration";
 		$this->version = "0.0.1";
 		$this->author = "Mateusz Pieła";
-        $this->need_instance = 0;
-        $this->ps_versions_compliancy = ['min' => '8.0.0', 'max' => _PS_VERSION_];		
+		$this->need_instance = 0;
+		$this->ps_versions_compliancy = ['min' => '8.0.0', 'max' => _PS_VERSION_];		
 		$this->bootstrap = true;
 		
 		parent::__construct();
@@ -28,12 +28,12 @@ class ps_edition_basic_uninstaller extends Module
 		
 		//Remove parent from dashboard
 		$tab = new \Tab(\Tab::getIdFromClassName('AdminDashboard'));
-        $tab->id_parent = 0;
-        $tab->save();
-        $tab->updatePosition(false, 1);
+		$tab->id_parent = 0;
+		$tab->save();
+		$tab->updatePosition(false, 1);
 		
 		//Set admin dashboard as default for employee
-        \Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . "employee SET default_tab = '$tab->id';");
+		\Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . "employee SET default_tab = '$tab->id';");
 		
 		return parent::install();
 	}
